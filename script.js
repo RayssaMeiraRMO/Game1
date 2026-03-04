@@ -1,69 +1,62 @@
-const mario = document.getElementById('mario');
-const obstaculo = document.getElementById('obstaculo');
-const scoreDisplay = document.getElementById('score');
+const player = document.getElementById("player");
+const game = document.getElementById("game");
 
+let velocityY = 0;
+let gravity = 0.8;
 let isJumping = false;
-let marioPosition = 50;
-let score = 0;
+let playerX = 50;
+let playerY = 50;
+let speed = 4;
+let keys = {};
 
-function jump() {
-    if (isJumping) return;
-    isJumping = true;
+const runSprites = [
+    "images/run1.png",
+    "images/run2.png"
+];
+let runFrame = 0;
 
-    let upInterval = setInterval(() => {
-        if (marioPosition >= 200) {
-            clearInterval(upInterval);
+// controles
+document.addEventListener("keydown", (e) => keys[e.code] = true);
+document.addEventListener("keyup", (e) => keys[e.code] = false);
 
-            let downInterval = setInterval(() => {
-                if (marioPosition <= 50) {
-                    clearInterval(downInterval);
-                    isJumping = false;
-                }
-                marioPosition -= 10;
-                mario.style.bottom = marioPosition + 'px';
-            }, 20);
+function gameLoop() {
+    // esquerda / direita
+    if (keys["ArrowRight"]) playerX += speed;
+    if (keys["ArrowLeft"]) playerX -= speed;
 
-        } else {
-            marioPosition += 10;
-            mario.style.bottom = marioPosition + 'px';
-        }
-    }, 20);
+    // gravidade
+    velocityY -= gravity;
+    playerY += velocityY;
+
+    // chão
+    if (playerY < 50) {
+        playerY = 50;
+        velocityY = 0;
+        isJumping = false;
+    }
+
+    // pulo
+    if (keys["Space"] && !isJumping) {
+        velocityY = 15;
+        isJumping = true;
+    }
+
+    // atualiza posição
+    player.style.left = playerX + "px";
+    player.style.bottom = playerY + "px";
+
+    // animação corrida
+    if (!isJumping && (keys["ArrowRight"] || keys["ArrowLeft"])) {
+        player.style.backgroundImage = `url(${runSprites[Math.floor(runFrame)])})`;
+        runFrame += 0.2;
+        if (runFrame >= runSprites.length) runFrame = 0;
+    } else if (isJumping) {
+        player.style.backgroundImage = "url('images/jump.png')";
+    } else {
+        player.style.backgroundImage = `url('${runSprites[0]}')`;
+    }
+
+    requestAnimationFrame(gameLoop);
 }
 
-document.addEventListener('keydown', (event) => {
-    if (event.code === 'Space') {
-        jump();
-    }
-});
-
-// Movimento do obstáculo e pontuação
-let obstaculoPosition = 800;
-function moveObstacle() {
-    obstaculoPosition -= 5;
-    obstaculo.style.right = obstaculoPosition + 'px';
-
-    if (obstaculoPosition < -50) {
-        obstaculoPosition = 800;
-        score++;
-        scoreDisplay.innerText = 'Pontuação: ' + score;
-    }
-
-    // Colisão simples
-    if (
-        obstaculoPosition < 100 &&
-        obstaculoPosition > 50 &&
-        marioPosition < 100
-    ) {
-        alert('Game Over! Sua pontuação: ' + score);
-        // Reset do jogo
-        obstaculoPosition = 800;
-        score = 0;
-        scoreDisplay.innerText = 'Pontuação: 0';
-        marioPosition = 50;
-        mario.style.bottom = marioPosition + 'px';
-    }
-
-    requestAnimationFrame(moveObstacle);
-}
-
-moveObstacle();
+gameLoop();
