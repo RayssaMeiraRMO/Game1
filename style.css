@@ -22,14 +22,14 @@ body {
 .ground {
     position: absolute;
     bottom: 0;
-    width: 2000px;
+    width: 3000px;
     height: 50px;
     background: url("images/ground.png") repeat-x;
 }
 
 .platform {
     position: absolute;
-    width: 128px; height: 32px;
+    width: 96px; height: 32px;
     background: url("images/platform.png") no-repeat;
     background-size: cover;
 }
