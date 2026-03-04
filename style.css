@@ -1,35 +1,54 @@
 body {
     margin: 0;
-    overflow: hidden;
-    background: #87ceeb;
-    font-family: sans-serif;
-}
-
-#game {
-    position: relative;
-    width: 100vw;
+    background: skyblue;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
     height: 100vh;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
 }
 
-#player {
-    position: absolute;
-    width: 48px; height: 48px;
-    background-repeat: no-repeat;
-    background-size: cover;
-    left: 50px; bottom: 50px;
+.game-container {
+    position: relative;
+    width: 800px;
+    height: 400px;
+    background: lightblue;
+    border: 2px solid #000;
+    overflow: hidden;
 }
 
-.ground {
+#chao {
     position: absolute;
     bottom: 0;
-    width: 3000px;
+    width: 100%;
     height: 50px;
-    background: url("images/ground.png") repeat-x;
+    background: green;
 }
 
-.platform {
+#mario {
     position: absolute;
-    width: 96px; height: 32px;
-    background: url("images/platform.png") no-repeat;
-    background-size: cover;
+    bottom: 50px;
+    left: 50px;
+    width: 50px;
+    height: 50px;
+    background: red; /* Aqui você pode colocar sprite de Mario */
+    border-radius: 10px;
+}
+
+#obstaculo {
+    position: absolute;
+    bottom: 50px;
+    right: 0;
+    width: 50px;
+    height: 50px;
+    background: brown;
+}
+
+#score {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 20px;
+    color: black;
 }
