@@ -1,5 +1,4 @@
 const player = document.getElementById("player");
-const game = document.getElementById("game");
 
 let velocityY = 0;
 let gravity = 0.8;
@@ -9,18 +8,19 @@ let playerY = 50;
 let speed = 4;
 let keys = {};
 
+// frames de animação
 const runSprites = [
-    "images/run1.png",
-    "images/run2.png"
+    "images/player_run_1.png",
+    "images/player_run_2.png"
 ];
 let runFrame = 0;
 
-// controles
+// eventos do teclado
 document.addEventListener("keydown", (e) => keys[e.code] = true);
 document.addEventListener("keyup", (e) => keys[e.code] = false);
 
 function gameLoop() {
-    // esquerda / direita
+    // mover para os lados
     if (keys["ArrowRight"]) playerX += speed;
     if (keys["ArrowLeft"]) playerX -= speed;
 
@@ -41,17 +41,17 @@ function gameLoop() {
         isJumping = true;
     }
 
-    // atualiza posição
+    // aplica posição
     player.style.left = playerX + "px";
     player.style.bottom = playerY + "px";
 
-    // animação corrida
+    // animação
     if (!isJumping && (keys["ArrowRight"] || keys["ArrowLeft"])) {
         player.style.backgroundImage = `url(${runSprites[Math.floor(runFrame)])})`;
         runFrame += 0.2;
         if (runFrame >= runSprites.length) runFrame = 0;
     } else if (isJumping) {
-        player.style.backgroundImage = "url('images/jump.png')";
+        player.style.backgroundImage = "url('images/player_jump.png')";
     } else {
         player.style.backgroundImage = `url('${runSprites[0]}')`;
     }
